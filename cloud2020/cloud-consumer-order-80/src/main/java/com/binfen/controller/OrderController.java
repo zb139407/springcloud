@@ -3,6 +3,7 @@ package com.binfen.controller;
 import com.binfen.entity.Payment;
 import com.binfen.entity.ResultEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,7 @@ import javax.annotation.Resource;
 @RestController
 @Slf4j
 public class OrderController {
-//    public static final String PAYMENT_URL = "http://localhost:8001";
+    //    public static final String PAYMENT_URL = "http://localhost:8001";
     public static final String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE";
 
     @Resource
@@ -32,5 +33,10 @@ public class OrderController {
     @GetMapping("/consumer/payment/get/{id}")
     public ResultEntity<Payment> getPayment(@PathVariable("id") Long id) {
         return restTemplate.getForObject(PAYMENT_URL + "/payment/get/" + id, ResultEntity.class);
+    }
+
+    @GetMapping("/consumer/discovery")
+    public Object discovery() {
+        return restTemplate.getForObject(PAYMENT_URL + "/payment/discovery", Object.class);
     }
 }
